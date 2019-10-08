@@ -1,2 +1,2 @@
 # CSC290
-Soduko game form CSI group
+Soduko game from CSI group
