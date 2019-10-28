@@ -29,6 +29,10 @@ class Sudoku():
         self.board=[]
         self.values=('1','2','3','4','5','6','7','8','9')
         #TODO: Setting up the board based on inputs in file.
+        board_info = file.readlines()
+        for value in range(len(board_info)):
+            self.board[value] = board_info[value]
+
 
 
     def to_string(self, board:List[List[str]])-> None:
