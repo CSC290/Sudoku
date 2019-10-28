@@ -31,22 +31,24 @@ class Sudoku():
         #TODO: Setting up the board based on inputs in file.
 
 
-    def to_string(self,board:List[List[str]])-> None:
+    def to_string(self, board:List[List[str]])-> None:
         """
         Print the board in one string.
         """
-        #TODO: Finish the print
-        values=
+        printB = []
+        for list in self.board:
+            printB.append(list)
 
-        print()
+        print(printB)
 
 
-    def move(self,row:int,col:int,value:int)-> None:
+    def move(self, row:int, col:int, value:int)-> None:
         """
         Adding the value to given row and col if the spot is valid to move.
         Check the availability of the spot by has_move method
         """
-        #TODO: Complete move
+        if has_move(row, col, value):
+            self.board[row][col] = value
 
 
     def has_move(self,row:int,col:int,value:int)-> bool:
@@ -58,7 +60,11 @@ class Sudoku():
         Note:
             This method only checks the availability not correctness.
         """
-        #TODO: Complete has_move
+        if value not in check_row(row):
+            if value not in check_col(col):
+                if value not in check_sub(s):
+                    return True
+        return False
 
 
     def remove(self,row:int,col:int,value:int)-> None:
@@ -69,19 +75,24 @@ class Sudoku():
             In this method, player can remove the starter value.
             The access will be blocked in GUI.
         """
-        # TODO: Complete remove
+        self.board[row][col] = ""
 
-    def check_row(self,row:int) -> bool:
+    def check_row(self,row:int, value:int) -> bool:
         """
         check if the spots on given row has no duplicated values.
         """
-        # TODO:Complete check_row
+        if value not in self.board[row]:
+            return True
+        return False
 
-    def check_col(self,col:int)-> bool:
+    def check_col(self,col:int, value:int)-> bool:
         """
         check if the spots on given col has no duplicated values.
         """
-        # TODO: Complete check_col
+        for list in self.board:
+            if list[col] == value:
+                return False
+        return True
 
     def check_sub(self,s:int)-> bool:
         """
