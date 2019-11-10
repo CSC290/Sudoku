@@ -2,12 +2,22 @@ from __future__ import annotations
 from typing import List,Tuple
 import random
 
+easyboards = {
+    1: [["4","6","9","","7","1","","",""],["","5","1","4","","","","","3"],["","","8","","","","4","","6"],["1","","7","5","9","","8","2",""],["","","4","","","","","",""],["8","","","2","3","","","5",""],["6","","","","","","9","",""],["","","","","","","","",""],["","","","","8","2","","3",""]]
+,   2: [["","9","","8","1","5","","3",""],["","","1","","","","4","","9"],["6","","","","","","5","",""],["3","","7","","","","","",""],["","","","","","6","","",""],["","","","","","","9","2","4"],["","","8","","","","","",""],["4","","","","6","","8","","2"],["2","7","","","9","8","3","6",""]]
+,   3: [["","","3","","8","4","","2",""],["","","","","","9","","",""],["","","","6","","","","3","5"],["3","1","","","4","","6","","9"],["","9","2","","","","","",""],["","7","4","","","","","5","8"],["","","","","","1","","",""],["","","9","","","","","",""],["8","4","","7","9","5","","",""]]}
+
+hardboards = {
+    1: [["","","3","2","9","4","7","",""],["","","","","","","6","8",""],["","","2","","","","","",""],["","","4","3","","","","9",""],["","","","9","1","6","2","",""],["8","","","","","","","",""],["","5","","","","","","","9"],["1","","","","","7","","",""],["","","","","6","","8","",""]],
+    2: [["","5","6","","","","","2",""],["9","","4","","","","","",""],["","2","","","6","","","5",""],["","","7","6","","","","",""],["","","","","","1","","7",""],["","6","","","2","","","8",""],["","","","1","","","","","3"],["","7","2","","","","4","",""],["4","","","","","8","2","",""]],
+    3: [["6","","7","5","","4","","",""],["4","","","","","","","",""],["","8","","","1","9","","",""],["","","1","","","2","","9","5"],["","4","","","","","","2",""],["2","6","","8","","","4","",""],["","","","6","3","","","5",""],["","","","","","","","","7"],["","","","7","","5","8","","2"]],
+}
 class Sudoku():
     """
     Setting up the sudoku board and game mechanism.
     """
 
-    def __init__(self,filename:str):
+    def __init__(self, mode:str):
         """
         Import sudoku starting board values from filename. And sets up the board.
 
@@ -16,54 +26,39 @@ class Sudoku():
             Empty space is represented as a'x'.
         """
         # Private attributes
-        # filename
-        #     The file we import board value from
+        # mode
+        #     The desired difficulty level for the game
         # board
         #     All symbols filed board
         # values
         #     All possible values
 
-        filename:str
+        mode:str
         board:List[List[str]]
         values:Tuple[str]
 
 
-        # a = random.randint(1, 5)
+        a = random.randint(1,3)
+        if mode == "easy":
+            self.board = easyboards[a]
 
-        file = open("hardboards.txt")
-        a = 1
-        while a != 0:
-            self.board = file.readline()
-            a -= 1
 
         self.values=('1','2','3','4','5','6','7','8','9')
-        board_info = file.readlines()
-        for value in range(len(board_info)):
-            self.board[value] = board_info[value]
 
-
-
-    def to_string(self, board:List[List[str]])-> None:
+    def to_string(self)-> None:
         """
         Print the board in one string.
         """
-        printB = []
+        printB = ""
         for list in self.board:
-            printB.append(list)
+            printB += str(list)
+            printB += "\n"
 
         print(printB)
 
 
-    def move(self, row:int, col:int, value:int)-> None:
-        """
-        Adding the value to given row and col if the spot is valid to move.
-        Check the availability of the spot by has_move method
-        """
-        if has_move(row, col, value):
-            self.board[row][col] = value
 
-
-    def has_move(self,row:int,col:int,value:int)-> bool:
+    def has_move(self, row:int, col:int, value:int)-> bool:
         """
         Check if the given row, col spot is available to add the value.
         Check the range of row and col
@@ -72,11 +67,20 @@ class Sudoku():
         Note:
             This method only checks the availability not correctness.
         """
-        if value not in check_row(row):
-            if value not in check_col(col):
-                if value not in check_sub(s):
+        if self.check_row(row, value):
+            if self.check_col(col, value):
+                if self.check_sub(row, col, value):
                     return True
         return False
+
+
+    def move(self, row:int, col:int, value:int)-> None:
+        """
+        Adding the value to given row and col if the spot is valid to move.
+        Check the availability of the spot by has_move method
+        """
+        if self.has_move(row, col, value):
+            self.board[row][col] = value
 
 
     def remove(self,row:int,col:int,value:int)-> None:
@@ -89,24 +93,22 @@ class Sudoku():
         """
         self.board[row][col] = ""
 
-    def check_row(self,row:int, value:int) -> bool:
+    def check_row(self, row:int, value:int) -> bool:
         """
-        check if the spots on given row has no duplicated values.
+        return True if value not in row
         """
-        if value not in self.board[row]:
-            return True
-        return False
+        return not value in self.board[row]
 
     def check_col(self,col:int, value:int)-> bool:
         """
-        check if the spots on given col has no duplicated values.
+        return True if the value is not in the column
         """
         for list in self.board:
             if list[col] == value:
                 return False
         return True
 
-    def check_sub(self,s:int)-> bool:
+    def check_sub(self, row:int, col:int, value)-> bool:
         """
         check if the given sub-square has no duplicated values.
         # Note:
@@ -115,22 +117,20 @@ class Sudoku():
         #   The second row of squares are 3,4,5 sub-square.
         #   The Third row of squares are 6,7,8 sub-square
         """
-        sub_row=s//3    # sub_row is the row of where the sub-square is
-        sub_col=s%3     # sub_col is the col of where the sub-square is
+        sub_row=row//3    # sub_row is the row of where the sub-square is
+        sub_col=col//3     # sub_col is the col of where the sub-square is
         sub_square=[]
-        for row in range(sub_row*3,(sub_row+1)*3):
-            sub_square+=self.board[row][sub_col*3:(sub_col+1)*3]
-        for v in self.values:
-            if not v in sub_square:
-                return False
-        return True
+        for i in range(3):
+            for c in range(3):
+                sub_square.append(self.board[sub_row+i][sub_col+c])
+        return value not in sub_square
 
     def is_filled(self)-> bool:
         """
         check if the board is all filled.
         """
         for row in self.board:
-            if 'x' in row:
+            if "" in row:
                 return False
         return True
 
@@ -142,21 +142,12 @@ class Sudoku():
         Note:
             this also checks correctness.
         """
-        if self.is_filled():
-            for val in range(len(self.board)):
-                if not (self.check_row(val) and self.check_col(val)):
+        for row in self.board:
+            if set(row) != self.values:
+                return False
+        for value in range(9):
+            for col in range(9):
+                if not self.check_col(col, value):
                     return False
-            for s in range(9):
-                if not (self.check_sub(s)):
-                    return False
-            return True
-        return False
-
-# a = (1,2,3)
-# print(type(a))
-#
-# list = []
-# while True:
-#     x = random.randint(0, 5)
-#     if x not in list:
-#         list.append(x)
+        #check subSquares
+        return True
