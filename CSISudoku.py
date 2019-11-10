@@ -1,5 +1,6 @@
 from __future__ import annotations
 from typing import List,Tuple
+import random
 
 class Sudoku():
     """
@@ -21,14 +22,21 @@ class Sudoku():
         #     All symbols filed board
         # values
         #     All possible values
+
         filename:str
         board:List[List[str]]
         values:Tuple[str]
 
-        file=open(filename)
-        self.board=[]
+
+        # a = random.randint(1, 5)
+
+        file = open("hardboards.txt")
+        a = 1
+        while a != 0:
+            self.board = file.readline()
+            a -= 1
+
         self.values=('1','2','3','4','5','6','7','8','9')
-        #TODO: Setting up the board based on inputs in file.
         board_info = file.readlines()
         for value in range(len(board_info)):
             self.board[value] = board_info[value]
@@ -143,3 +151,12 @@ class Sudoku():
                     return False
             return True
         return False
+
+# a = (1,2,3)
+# print(type(a))
+#
+# list = []
+# while True:
+#     x = random.randint(0, 5)
+#     if x not in list:
+#         list.append(x)
