@@ -47,9 +47,9 @@ class Sudoku():
         else:
             self.board = hardboards[num]
 
-        self.values=("1","2","3","4","5","6","7","8","9")
+        self.values = ("1","2","3","4","5","6","7","8","9")
 
-    def to_string(self)-> None:
+    def __str__(self):
         """
         Print the board in one string.
         """
@@ -66,9 +66,7 @@ class Sudoku():
                 else:
                     board += " | " + self.board[i][j] + " | "
             board += "\n \n"
-
-        print(board)
-
+        return board
 
 
     def has_move(self, row:int, col:int, value:int)-> bool:
@@ -92,6 +90,8 @@ class Sudoku():
         Adding the value to given row and col if the spot is valid to move.
         Check the availability of the spot by has_move method
         """
+        if row>8 or col>8 or row<0 or col<0:
+            return None
         if self.has_move(row, col, value):
             self.board[row][col] = str(value)
 
