@@ -1,9 +1,25 @@
 
 import pygame
+from CSISudoku import Sudoku
 
 class GUI():
 
+    def update_all(self,nums, list_pos, screen):
+        numFont = pygame.font.SysFont("Sariff", 50)
+        for row in range(len(nums)):
+            for col in range(len(nums[row])):
+                num = numFont.render(nums[row][col], 1, (0, 0, 0))
+                screen.blit(num, (list_pos[row][col][0] + 15, list_pos[row][col][1] + 10))
+
+    def update_single(self, value,pos,screen):
+        numFont = pygame.font.SysFont("Sariff", 50)
+        num = numFont.render(str(value),1,(0,0,0))
+        screen.blit(num,(pos[0]+15,pos[1]+10))
+
+
     def board(self):
+
+        game = Sudoku("easy")
         # Setting up the screen
         pygame.init()
         screen = pygame.display.set_mode((480,480))
@@ -28,9 +44,9 @@ class GUI():
                 top=top+square_size+thin_line
 
 
-        # list_pos is storing all the points of each intersection between each line
-        # list_pos is a double_nested list of Tuple
-        # So we can use the position of points to define which area the mouse is reacting to.
+        # Setting up rectangles for each box.
+
+        list_rect = []
         list_pos = []
         row_pos=0
         for row in range(10):
@@ -39,33 +55,29 @@ class GUI():
                 row_pos+=thick_line
             else:
                 row_pos+=thin_line
+            list_rect.append([])
             list_pos.append([])
             for col in range(10):
-                if row%3==0:
+                if col%3==0:
                     col_pos+=thick_line
-                    list_pos[row].append((row_pos, col_pos))
-                    col_pos = col_pos+square_size+thick_line
+                    list_pos[row].append((row_pos,col_pos))
+                    rect = pygame.draw.rect(screen,(250,250,250),pygame.Rect((row_pos,col_pos),(50,50)),0)
+                    list_rect[row].append(rect)
+                    col_pos = col_pos+square_size
                 else:
                     col_pos += thin_line
                     list_pos[row].append((row_pos, col_pos))
-                    col_pos = col_pos + square_size + thin_line
+                    rect = pygame.draw.rect(screen, (250, 250, 250), pygame.Rect((row_pos, col_pos), (50, 50)), 0)
+                    list_rect[row].append(rect)
+                    col_pos = col_pos + square_size
             if row % 3 == 0:
-                row_pos = row_pos + square_size + thick_line
+                row_pos = row_pos + square_size
             else:
-                row_pos = row_pos + square_size + thin_line
+                row_pos = row_pos + square_size
+        #Setting up numbers on the board
+        nums = game.board
+        self.update_all(nums,list_pos,screen)
 
-        """ list_pos should be something like this refer to the points on board
-        [[(0, 0), (0, 54), (0, 108), (0, 162), (0, 216), (0, 270), (0, 324), (0, 378), (0, 432), (0, 486)]
-        [(54, 0), (54, 52), (54, 104), (54, 156), (54, 208), (54, 260), (54, 312), (54, 364), (54, 416), (54, 468)]
-        [(106, 0), (106, 52), (106, 104), (106, 156), (106, 208), (106, 260), (106, 312), (106, 364), (106, 416), (106, 468)]
-        [(158, 0), (158, 54), (158, 108), (158, 162), (158, 216), (158, 270), (158, 324), (158, 378), (158, 432), (158, 486)]
-        [(212, 0), (212, 52), (212, 104), (212, 156), (212, 208), (212, 260), (212, 312), (212, 364), (212, 416), (212, 468)]
-        [(264, 0), (264, 52), (264, 104), (264, 156), (264, 208), (264, 260), (264, 312), (264, 364), (264, 416), (264, 468)]
-        [(316, 0), (316, 54), (316, 108), (316, 162), (316, 216), (316, 270), (316, 324), (316, 378), (316, 432), (316, 486)]
-        [(370, 0), (370, 52), (370, 104), (370, 156), (370, 208), (370, 260), (370, 312), (370, 364), (370, 416), (370, 468)]
-        [(422, 0), (422, 52), (422, 104), (422, 156), (422, 208), (422, 260), (422, 312), (422, 364), (422, 416), (422, 468)]
-        [(474, 0), (474, 54), (474, 108), (474, 162), (474, 216), (474, 270), (474, 324), (474, 378), (474, 432), (474, 486)]]
-        """
 
         # Got some issue here, when the mouse button down, the desired area color is not changing.
         while 1:
