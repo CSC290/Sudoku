@@ -13,23 +13,18 @@ class Rectangle():
         self.num = num
         self.num_surface= self.numFont.render(num, 1, (0, 0, 0))
         self.color = color
-
-    def get_num(self):
-        return self.num
+        self.selected = False
 
     def change_num(self,num):
         if self.editable:
             self.num = num
             self.num_surface= self.numFont.render(num, 1, (0, 0, 0))
 
-    def get_num_surface(self):
-        return self.num_surface
-
     def change_color(self,color):
         self.rect = pygame.draw.rect(self.screen,color,self.rect,0)
 
-    def get_position(self):
-        return self.position
+    def select(self):
+        self.selected=True
 
-    def get_color(self):
-        return self.color
+    def unselect(self):
+        self.selected=False

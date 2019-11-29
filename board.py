@@ -85,15 +85,17 @@ class Sudoku():
         return False
 
 
-    def move(self, row:int, col:int, value:int)-> None:
+    def move(self, row:int, col:int, value:int)-> bool:
         """
         Adding the value to given row and col if the spot is valid to move.
         Check the availability of the spot by has_move method
         """
         if row>8 or col>8 or row<0 or col<0:
-            return None
+            return False
         if self.has_move(row, col, value):
             self.board[row][col] = str(value)
+            return True
+        return False
 
 
     def remove(self,row:int,col:int,value:int)-> None:
@@ -155,12 +157,13 @@ class Sudoku():
         Note:
             this also checks correctness.
         """
+        if not self.is_filled():
+            return False
         for row in self.board:
             if set(row) != self.values:
                 return False
         for value in range(9):
-            for col in range(9):
-                if not self.check_col(col, value):
+            for num in range(9):
+                if not self.check_col(num, value) or not self.check_row(num,value):
                     return False
-        #check subSquares
         return True
