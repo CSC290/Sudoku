@@ -1,6 +1,6 @@
 import pygame
 import thorpy
-
+import boardGUI
 
 
 
@@ -25,30 +25,6 @@ start.set_font_size(40)
 start.set_size((200,100))
 start.center()
 
-def switch(event):
-    easy = thorpy.make_button("EASY")
-    easy.set_font("Bahnschrift SemiBold")
-    easy.set_main_color((0, 148, 0))
-    easy.set_font_color((255, 255, 255))
-    easy.set_font_size(40)
-    easy.set_size((200, 100))
-    easy.center()
-
-    hard = thorpy.make_button("HARD")
-    hard.set_font("Bahnschrift SemiBold")
-    hard.set_main_color((0, 148, 0))
-    hard.set_font_color((255, 255, 255))
-    hard.set_font_size(40)
-    hard.set_size((200, 100))
-    hard.center()
-
-    background2 = thorpy.Background(color=(0, 102, 204),
-                               elements=[easy, hard])
-    thorpy.store(background2)
-    menu = thorpy.Menu(background2)
-    menu.play()
-reaction = thorpy.Reaction(reacts_to=pygame.MOUSEBUTTONDOWN, reac_func=switch)
-start.add_reaction(reaction)
 
 
 
@@ -61,6 +37,14 @@ quit.set_font_color((255,255,255))
 quit.set_size((200,100))
 quit.center()
 
+def start_game(event):
+    b = boardGUI.GUI()
+    b.board()
+
+
+game_reaction = thorpy.Reaction(reacts_to=pygame.MOUSEBUTTONDOWN, reac_func=start_game)
+start.add_reaction(game_reaction)
+
 #Setting background and adding elements to background
 background = thorpy.Background(color=(0, 102, 204),
                                elements=[pic_button, title, start, quit])
@@ -69,5 +53,6 @@ thorpy.store(background)
 #Adding background to menu and launching menu.
 menu = thorpy.Menu(background)
 menu.play()
+
 
 
