@@ -4,6 +4,21 @@ from board import Sudoku
 from rectangle import Rectangle
 
 class GUI():
+    """
+    This class set up the Board user interface.
+
+    Private Attributes:
+        square_size: int
+            The width and length of small square are both 50.
+        thick_line: int
+            Thick line is used to separate sub_grid and the thickness is 4.
+        thin_line: int
+            Thin line is used to separate squares and thickness is 2.
+        list_rect: List[Rectangle]
+            A list of all rectangles on the board.
+        nums: List[num]
+            A list of all possible inputs on the board.
+    """
     square_size = 50  # Each square is 50x50
     thick_line = 4  # Every three square is separated with a thick line
     thin_line = 2
@@ -11,6 +26,9 @@ class GUI():
     nums = ['1','2','3','4','5','6','7','8','9']
 
     def draw_lines(self,screen):
+        """
+        This methods draws all the lines on screen.
+        """
         square_size = self.square_size  # Each square is 50x50
         thick_line = self.thick_line  # Every three square is separated with a thick line
         thin_line = self.thin_line
@@ -28,6 +46,13 @@ class GUI():
                 top = top + square_size + thin_line
 
     def set_up_rect(self,screen,nums):
+        """
+        Fill in rectangles in each squares which are separated with lines on screen and set up the numbers in
+        certain row,col index from nums.
+        :param screen: pygame.display.screen
+        :param nums: List[List[string]]
+        :return: None
+        """
         square_size = self.square_size  # Each square is 50x50
         thick_line = self.thick_line  # Every three square is separated with a thick line
         thin_line = self.thin_line
@@ -61,9 +86,20 @@ class GUI():
                 row_pos = row_pos + square_size
 
     def gen_index(self,x,y):
+        """
+        Get the position on the screen and return a tuple of (row,col) of which rectangle is at
+        x,y position in list_rect.
+        :param x: int
+        :param y: int
+        :return: Tuple(int,int)
+        """
         return (x//50,y//50)
 
     def board(self):
+        """
+        Set up board and detect events.
+        :return: None
+        """
 
         game = Sudoku("easy")
         # Setting up the screen
