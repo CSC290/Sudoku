@@ -81,7 +81,7 @@ Authors are listed below:
 
 MIT License
 
-Copyright (c) [2019] [Litao Chen,Kamran, Yousef, Huzaifa]
+Copyright (c) [2019] [Litao Chen, Badirov Kamran, Yousef, Huzaifa]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -108,5 +108,8 @@ SOFTWARE.
 ### Litao Chen
 For the code part, I contributed doc string and partial codes writing for `board.py`. I also fully contributed `boardGUI.py` and `rectangle.py`.
 I contributed all the readMe excpet other people's Individual Contribution and #Sudoku.
+
+### Kamran Badirov
+I have contributed to board.py by adding easyboards and hardboards. Also I have adjusted the __init__ method in board.py. I have also helped with __str__ method of board.py. 
  
 [Back to top](#top)
