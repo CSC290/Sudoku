@@ -105,7 +105,8 @@ SOFTWARE.
 
 ## <a name="contribution"></a>Individual Contribution
 
-# Litao Chen
+### Litao Chen
 For the code part, I contributed doc string and partial codes writing for `board.py`. I also fully contributed `boardGUI.py` and `rectangle.py`.
 I contributed all the readMe excpet other people's Individual Contribution and #Sudoku.
  
+[Back to top](#top)
